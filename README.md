@@ -1,0 +1,3 @@
+# Coding Challenge 13
+
+In this project, we develop a Dynamic Product Display Application by utilizing skills in API requests, DOM manipulation, and user interface design. Key objectives include fetching data from an API endpoint and dynamically displaying the information on a webpage. Additionally, the project focuses on implementing error handling and loading states. Furthermore, we leverage CSS to enhance layout, transitions and animations, emphasizing visual appeal.
