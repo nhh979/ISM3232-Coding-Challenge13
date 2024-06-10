@@ -5,23 +5,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const loadingIndicator = document.getElementById('loading');
 
-    async function call() {    
+    async function call(index) {    
         try { //Handling errors and exeptions
             // Show loading indicator
             loadingIndicator.style.display = 'block';
             
             const request = await fetch('https://www.course-api.com/react-store-products');
             const data = await request.json();
+            
 
             //Hide loading indicator
             loadingIndicator.style.display = 'none';
             
             //Display product data
-            document.querySelector('#productName').textContent = `Product: ${data[0]['name']}`;
-            document.querySelector('#productImage').src = `${data[0].image}`;
+            document.querySelector('#productName').textContent = `Product: ${data[index]['name']}`;
+            document.querySelector('#productImage').src = `${data[index].image}`;
             document.querySelector('#productImage').width = 300;
-            document.querySelector('#productPrice').textContent = `Price: $${data[0].price}`;
-            document.querySelector('#productDescription').textContent = `Description: ${data[0]['description']}`
+            document.querySelector('#productPrice').textContent = `Price: $${data[index].price}`;
+            document.querySelector('#productDescription').textContent = `Description: ${data[index]['description']}`
         } catch (error) {   
             //Hide loading indicator when an error occurs    
             loadingIndicator.style.display = 'none';   
@@ -30,8 +31,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    call()
-
+    let currentIndex = 0
+    call(currentIndex)
+    document.getElementById('nextButton').addEventListener('click', ()=>{
+        currentIndex += 1;
+        call(currentIndex);
+    })
+    document.getElementById('previousButton').addEventListener('click', ()=>{
+        currentIndex -= 1;
+        call(currentIndex);
+    })
 })
 
 
