@@ -11,25 +11,45 @@ document.addEventListener('DOMContentLoaded', () => {
             loadingIndicator.style.display = 'block';
             
             const request = await fetch('https://www.course-api.com/react-store-products');
+            if (!request.ok){
+                throw new Error()
+            }
+            
             const data = await request.json();            
             productCounts = data.length;
-
+            
             //Hide loading indicator
             loadingIndicator.style.display = 'none';
             
+            // Animate exit
+            document.body.classList.add('body-exit');
+            document.body.offsetWidth; // Trigger reflow
+            document.body.classList.add('body-exit-active');
+
+            // After exit animation, update the product and animate entry
+            setTimeout(() => {
+
             //Display product data
-            document.querySelector('#productName').textContent = `Product: ${data[index]['name']}`;
+            document.querySelector('#productName').textContent = `Product: ${data[index]['name'].toUpperCase()}`;
             document.querySelector('#productImage').src = `${data[index].image}`;
-            document.querySelector('#productImage').width = 300;
+            document.querySelector('#productImage').width = 400;
+            document.querySelector('#productImage').height = 400;
             document.querySelector('#productPrice').textContent = `Price: $${data[index].price}`;
             document.querySelector('#productDescription').textContent = `Description: ${data[index]['description']}`
+
+            // Remove exit classes and add enter classes
+            document.body.classList.remove('body-exit', 'body-exit-active');
+            document.body.classList.add('body-enter');
+            document.body.offsetWidth; // Trigger reflow
+            document.body.classList.add('body-enter-active');
+            }, 500)            
         } catch (error) {   
             //Hide loading indicator when an error occurs    
             loadingIndicator.style.display = 'none';   
-            alert('There was an error loading products. Please try again later.')
-            
+            alert('There was an error loading products. Please try again later.')            
         }
     }
+
     //Display the first product 
     let currentIndex = 0
     call(currentIndex)
@@ -37,14 +57,14 @@ document.addEventListener('DOMContentLoaded', () => {
     //Next button event listener
     document.getElementById('nextButton').addEventListener('click', ()=>{
         currentIndex = (currentIndex + 1) % productCounts;
-        // console.log(currentIndex);        
+        console.log(currentIndex);        
         call(currentIndex);
     })
 
     //Previous button event listener
     document.getElementById('previousButton').addEventListener('click', ()=>{
         currentIndex = (productCounts + currentIndex - 1) % productCounts;
-        // console.log(currentIndex);
+        console.log(currentIndex);
         call(currentIndex);
     })
 })
