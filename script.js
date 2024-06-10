@@ -4,15 +4,15 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     const loadingIndicator = document.getElementById('loading');
-
+    let productCounts;  // Used to obtain the number of products
     async function call(index) {    
         try { //Handling errors and exeptions
             // Show loading indicator
             loadingIndicator.style.display = 'block';
             
             const request = await fetch('https://www.course-api.com/react-store-products');
-            const data = await request.json();
-            
+            const data = await request.json();            
+            productCounts = data.length;
 
             //Hide loading indicator
             loadingIndicator.style.display = 'none';
@@ -30,15 +30,21 @@ document.addEventListener('DOMContentLoaded', () => {
             
         }
     }
-
+    //Display the first product 
     let currentIndex = 0
     call(currentIndex)
+
+    //Next button event listener
     document.getElementById('nextButton').addEventListener('click', ()=>{
-        currentIndex += 1;
+        currentIndex = (currentIndex + 1) % productCounts;
+        // console.log(currentIndex);        
         call(currentIndex);
     })
+
+    //Previous button event listener
     document.getElementById('previousButton').addEventListener('click', ()=>{
-        currentIndex -= 1;
+        currentIndex = (productCounts + currentIndex - 1) % productCounts;
+        // console.log(currentIndex);
         call(currentIndex);
     })
 })
